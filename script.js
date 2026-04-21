@@ -1,4 +1,4 @@
-let tarefas = [];
+let tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
 
 function adicionarTarefa() {
     const input = document.getElementById("nova-tarefa");
@@ -24,17 +24,33 @@ function renderizar() {
     tarefas.forEach((tarefa, index) => {
         const li = document.createElement("li");
 
-        li.textContent = tarefa.texto;
+        const texto = document.createElement("span");
+        texto.textContent = tarefa.texto;
+
+        const botaoExcluir = document.createElement("button");
+        botaoExcluir.textContent = "X";
+
+        botaoExcluir.onclick = () => {
+            tarefas.splice(index, 1);
+            renderizar();
+        };
+
+        li.appendChild(texto);
+        li.appendChild(botaoExcluir);
 
         if (tarefa.concluida) {
-            li.style.textDecoration = "line-through";
+            texto.style.textDecoration = "line-through";
         }
 
-        li.onclick = () => {
+        texto.onclick = () => {
             tarefas[index].concluida = !tarefas[index].concluida;
             renderizar();
         };
 
         lista.appendChild(li);
     });
+
+    localStorage.setItem("tarefas", JSON.stringify(tarefas));
 }
+
+renderizar();
