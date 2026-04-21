@@ -35,9 +35,6 @@ function renderizar() {
             renderizar();
         };
 
-        li.appendChild(texto);
-        li.appendChild(botaoExcluir);
-
         if (tarefa.concluida) {
             texto.style.textDecoration = "line-through";
         }
@@ -46,6 +43,22 @@ function renderizar() {
             tarefas[index].concluida = !tarefas[index].concluida;
             renderizar();
         };
+
+        const botaoEditar = document.createElement("button");
+        botaoEditar.textContent = "✏️"
+
+        botaoEditar.onclick = () => {
+            const novoTexto = prompt("Editar tarefa:", tarefa.texto);
+
+            if (novoTexto === null || novoTexto === "") return;
+
+            tarefas[index].texto = novoTexto;
+            renderizar();
+        }
+
+        li.appendChild(texto);
+        li.appendChild(botaoExcluir);
+        li.appendChild(botaoEditar);
 
         lista.appendChild(li);
     });
