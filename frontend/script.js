@@ -2,18 +2,28 @@ let tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
 
 function adicionarTarefa() {
     const input = document.getElementById("nova-tarefa");
-    const texto = input.value;
+    const texto = input.value
 
     if (texto.trim() === "") return;
 
-    tarefas.push({
-        texto: texto,
-        concluida: false
-    });
+    fetch("http://localhost:8000/backend/tasks.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ texto: texto })
+    })
+        .then(res => res.json())
+        .then(data => {
+            console.log("Resposta do PHP:", data);
 
-    input.value = "";
+            input.value = "";
 
-    renderizar();
+            carregarTarefas();
+        })
+        .catch(err => {
+            console.error("Erro:", err);
+        });
 }
 
 function renderizar() {
@@ -70,4 +80,16 @@ function renderizar() {
     localStorage.setItem("tarefas", JSON.stringify(tarefas));
 }
 
-renderizar();
+function carregarTarefas() {
+    fetch("http://localhost:8000/backend/tasks.php")
+        .then(res => res.json())
+        .then(data => {
+            tarefas = data;
+            renderizar();
+        })
+        .catch(err => {
+            console.error("Erro ao carregar tarefas:", err);
+        });
+}
+
+carregarTarefas();
