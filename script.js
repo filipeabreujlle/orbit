@@ -4,7 +4,7 @@ function adicionarTarefa() {
     const input = document.getElementById("nova-tarefa");
     const texto = input.value;
 
-    if (texto === "") return;
+    if (texto.trim() === "") return;
 
     tarefas.push({
         texto: texto,
@@ -31,6 +31,10 @@ function renderizar() {
         botaoExcluir.textContent = "X";
 
         botaoExcluir.onclick = () => {
+            const confirmar = confirm("Deseja excluir essa tarefa?");
+
+            if (!confirmar) return;
+
             tarefas.splice(index, 1);
             renderizar();
         };
@@ -50,7 +54,7 @@ function renderizar() {
         botaoEditar.onclick = () => {
             const novoTexto = prompt("Editar tarefa:", tarefa.texto);
 
-            if (novoTexto === null || novoTexto === "") return;
+            if (novoTexto === null || novoTexto.trim() === "") return;
 
             tarefas[index].texto = novoTexto;
             renderizar();
