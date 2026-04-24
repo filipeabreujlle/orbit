@@ -4,10 +4,11 @@ header("Content-Type: application/json");
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-$tarefas = [
-    ["texto" => "Estudar programação", "Concluida" => false],
-    ["texto" => "Treinar", "Concluida" => true]
-];
+$arquivo = __DIR__ . "/tarefas.json";
+
+$json = file_get_contents($arquivo);
+
+$tarefas = json_decode($json, true);
 
 if ($method === 'GET') {
     echo json_encode($tarefas);
@@ -23,8 +24,12 @@ if ($method === 'POST') {
 
     $novaTarefa = [
         "texto" => $dados['texto'],
-        "concluida" => false
+        "concluida" => $dados['concluida'] ?? false
     ];
+
+    $tarefas[] = $novaTarefa;
+
+    file_put_contents($arquivo, json_encode($tarefas));
 
     echo json_encode($novaTarefa);
 }

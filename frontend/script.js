@@ -54,8 +54,21 @@ function renderizar() {
         }
 
         texto.onclick = () => {
-            tarefas[index].concluida = !tarefas[index].concluida;
-            renderizar();
+            const novaSituacao = !tarefas[index].concluida;
+
+            fetch("http://localhost:8000/backend/tasks.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    texto: tarefas[index].texto,
+                    concluida: novaSituacao
+                })
+            })
+                .then(() => {
+                    carregarTarefas();
+                });
         };
 
         const botaoEditar = document.createElement("button");
