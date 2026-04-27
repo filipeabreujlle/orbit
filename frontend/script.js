@@ -1,3 +1,17 @@
+function enviarParaAPI(dados) {
+    return fetch("http://localhost:8000/backend/tasks.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dados)
+    })
+        .then(res => res.json())
+        .catch(err => {
+            console.error("Erro na API:", err);
+        })
+}
+
 let tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
 
 function adicionarTarefa() {
@@ -6,23 +20,13 @@ function adicionarTarefa() {
 
     if (texto.trim() === "") return;
 
-    fetch("http://localhost:8000/backend/tasks.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ texto: texto })
-    })
-        .then(res => res.json())
+    enviarParaAPI({ texto: texto })
         .then(data => {
             console.log("Resposta do PHP:", data);
 
             input.value = "";
 
             carregarTarefas();
-        })
-        .catch(err => {
-            console.error("Erro:", err);
         });
 }
 
@@ -42,11 +46,14 @@ function renderizar() {
 
         botaoExcluir.onclick = () => {
             const confirmar = confirm("Deseja excluir essa tarefa?");
-
             if (!confirmar) return;
 
-            tarefas.splice(index, 1);
-            renderizar();
+            enviarParaAPI({
+                acao: "deletar",
+                id: tarefa.id
+            }).then(() => {
+                carregarTarefas();
+            });
         };
 
         if (tarefa.concluida) {
@@ -56,19 +63,13 @@ function renderizar() {
         texto.onclick = () => {
             const novaSituacao = !tarefas[index].concluida;
 
-            fetch("http://localhost:8000/backend/tasks.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    texto: tarefas[index].texto,
-                    concluida: novaSituacao
-                })
-            })
-                .then(() => {
-                    carregarTarefas();
-                });
+            enviarParaAPI({
+                acao: "atualizar",
+                id: tarefa.id,
+                concluida: novaSituacao
+            }).then(() => {
+                carregarTarefas();
+            });
         };
 
         const botaoEditar = document.createElement("button");
