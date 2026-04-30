@@ -1,5 +1,18 @@
 <?php
 
+$pdo = new PDO('sqlite:' . __DIR__ . '/banco.sqlite');
+
+$pdo->exec("
+    CREATE TABLE IF NOT EXISTS tarefas (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        texto TEXT,
+        concluida INTEGER
+    )
+");
+
+echo "Tabela criada com sucesso!";
+exit;
+
 header("Content-Type: application/json");
 
 $method = $_SERVER['REQUEST_METHOD'];
