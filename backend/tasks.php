@@ -11,7 +11,6 @@ $pdo->exec("
 ");
 
 echo "Tabela criada com sucesso!";
-exit;
 
 header("Content-Type: application/json");
 
@@ -67,15 +66,16 @@ if ($method === 'POST') {
         exit;
     }
 
-    $novaTarefa = [
-        "id" => uniqid(),
-        "texto" => $dados['texto'],
-        "concluida" => $dados['concluida'] ?? false
-    ];
+    $stmt = $pdo->prepare(
+        "INSERT INTO tarefas (texto, concluida) VALUES (?, ?)"
+    );
 
-    $tarefas[] = $novaTarefa;
+    $stmt->execute([
+        $dados["texto"],
+        $dados["concluida"] ?? 0
+    ]);
 
-    file_put_contents($arquivo, json_encode($tarefas));
-
-    echo json_encode($novaTarefa);
+    echo json_encode([
+        "status" => "criado"
+    ]);
 }
