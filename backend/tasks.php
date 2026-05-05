@@ -10,8 +10,6 @@ $pdo->exec("
     )
 ");
 
-echo "Tabela criada com sucesso!";
-
 header("Content-Type: application/json");
 
 $method = $_SERVER['REQUEST_METHOD'];
@@ -23,6 +21,11 @@ $json = file_get_contents($arquivo);
 $tarefas = json_decode($json, true);
 
 if ($method === 'GET') {
+
+    $stmt = $pdo->query("SELECT * FROM tarefas");
+
+    $tarefas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     echo json_encode($tarefas);
 }
 
