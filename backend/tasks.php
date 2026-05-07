@@ -36,14 +36,8 @@ if ($method === 'POST') {
         $id = $dados["id"];
         $novaSituacao = $dados["concluida"];
 
-        foreach ($tarefas as &$tarefa) {
-            if ($tarefa["id"] === $id) {
-                $tarefa["concluida"] = $novaSituacao;
-                break;
-            }
-        }
-
-        file_put_contents($arquivo, json_encode($tarefas));
+        $stmt = $pdo->prepare("UPDATE tarefas SET concluida = ? WHERE id = ?");
+        $stmt->execute([$novaSituacao, $id]);
 
         echo json_encode(["status" => "atualizado"]);
         exit;
@@ -52,13 +46,8 @@ if ($method === 'POST') {
     if (($dados["acao"] ?? "") === "deletar") {
         $id = $dados["id"];
 
-        $tarefas = array_filter($tarefas, function ($tarefa) use ($id) {
-            return $tarefa["id"] !== $id;
-        });
-
-        $tarefas = array_values($tarefas);
-
-        file_put_contents($arquivo, json_encode($tarefas));
+        $stmt = $pdo->prepare('DELETE FROM tarefas WHERE id = ?');
+        $stmt->execute([$id]);
 
         echo json_encode(["status" => "deletado"]);
         exit;
