@@ -75,15 +75,20 @@ function criarElementoTarefa(tarefa) {
         });
     };
 
-    //editar (ainda só frontend por enquanto)
+
     botaoEditar.onclick = () => {
         const novoTexto = prompt("Editar tarefa:", tarefa.texto);
 
         if (novoTexto === null || novoTexto.trim() === "") return;
 
-        // ainda não está no backend (vamos melhorar depois)
-        tarefa.texto = novoTexto;
-        renderizar();
+        enviarParaAPI({
+            acao: "atualizar",
+            id: tarefa.id,
+            texto: novoTexto,
+            concluida: tarefa.concluida
+        }).then(() => {
+            carregarTarefas();
+        })
     };
 
     li.appendChild(texto);

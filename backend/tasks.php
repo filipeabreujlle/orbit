@@ -36,8 +36,8 @@ if ($method === 'POST') {
         $id = $dados["id"];
         $novaSituacao = $dados["concluida"];
 
-        $stmt = $pdo->prepare("UPDATE tarefas SET concluida = ? WHERE id = ?");
-        $stmt->execute([$novaSituacao, $id]);
+        $stmt = $pdo->prepare("UPDATE tarefas SET texto = ?, concluida = ? WHERE id = ?");
+        $stmt->execute([$dados["texto"], $novaSituacao, $id]);
 
         echo json_encode(["status" => "atualizado"]);
         exit;
