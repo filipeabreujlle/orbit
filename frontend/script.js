@@ -38,6 +38,10 @@ function criarElementoTarefa(tarefa) {
     const texto = document.createElement("span");
     texto.textContent = tarefa.texto;
 
+    const input = document.createElement("input");
+    input.value = tarefa.texto;
+    input.style.display = "none";
+
     const botaoExcluir = document.createElement("button");
     botaoExcluir.textContent = "X";
 
@@ -56,6 +60,7 @@ function criarElementoTarefa(tarefa) {
         enviarParaAPI({
             acao: "atualizar",
             id: tarefa.id,
+            texto: tarefa.texto,
             concluida: novaSituacao
         }).then(() => {
             carregarTarefas();
@@ -77,26 +82,39 @@ function criarElementoTarefa(tarefa) {
 
 
     botaoEditar.onclick = () => {
-        const novoTexto = prompt("Editar tarefa:", tarefa.texto);
+        texto.style.display = "none";
+        input.style.display = "inline";
 
-        if (novoTexto === null || novoTexto.trim() === "") return;
+        input.focus();
 
-        enviarParaAPI({
-            acao: "atualizar",
-            id: tarefa.id,
-            texto: novoTexto,
-            concluida: tarefa.concluida
-        }).then(() => {
-            carregarTarefas();
-        })
+        input.onblur = () => {
+            const novoTexto = input.value.trim();
+
+            if (novoTexto === "") {
+                input.style.display = "none";
+                texto.style.display = "inline";
+                return;
+            }
+
+            enviarParaAPI({
+                acao: "atualizar",
+                id: tarefa.id,
+                texto: novoTexto,
+                concluida: tarefa.concluida
+            }).then(() => {
+                carregarTarefas();
+            })
+        };
     };
 
     li.appendChild(texto);
+    li.appendChild(input);
     li.appendChild(botaoExcluir);
     li.appendChild(botaoEditar);
 
     return li;
 }
+
 
 function renderizar() {
     const lista = document.getElementById("lista-tarefas");
