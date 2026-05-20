@@ -135,6 +135,11 @@ function renderizar() {
     const lista = document.getElementById("lista-tarefas");
     lista.innerHTML = "";
 
+    if (tarefas.length === 0) {
+        lista.innerHTML = "<p>No tasks yet.</p>";
+        return;
+    }
+
     tarefas.forEach((tarefa) => {
         const li = criarElementoTarefa(tarefa);
         lista.appendChild(li);
