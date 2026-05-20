@@ -86,8 +86,9 @@ function criarElementoTarefa(tarefa) {
         input.style.display = "inline";
 
         input.focus();
+        input.select();
 
-        input.onblur = () => {
+        const salvarEdicao = () => {
             const novoTexto = input.value.trim();
 
             if (novoTexto === "") {
@@ -103,8 +104,22 @@ function criarElementoTarefa(tarefa) {
                 concluida: tarefa.concluida
             }).then(() => {
                 carregarTarefas();
-            })
+            });
         };
+
+        input.onblur = salvarEdicao;
+
+        input.onkeydown = (event) => {
+            if (event.key === "Enter") {
+                salvarEdicao();
+            }
+            if (event.key === "Escape") {
+                input.value = tarefa.texto;
+
+                input.style.display = "none";
+                texto.style.display = "inline";
+            }
+        }
     };
 
     li.appendChild(texto);
