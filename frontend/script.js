@@ -2,6 +2,22 @@ const API_URL = "http://localhost:8000/backend/tasks.php";
 
 let tarefas = [];
 
+function mostrarDataAtual() {
+    const elementoData = document.getElementById("data-atual");
+
+    const data = new Date();
+
+    const opcoes = {
+        weekday: "long",
+        day: "numeric",
+        month: "long"
+    };
+
+    const dataFormatada = data.toLocaleDateString("pt-BR", opcoes);
+
+    elementoData.textContent = `Hoje é ${dataFormatada}`;
+}
+
 function enviarParaAPI(dados) {
     return fetch(API_URL, {
         method: "POST",
@@ -135,8 +151,20 @@ function renderizar() {
     const lista = document.getElementById("lista-tarefas");
     lista.innerHTML = "";
 
+    const contador = document.getElementById("contador-tarefas");
+
+    const tarefasPendentes = tarefas.filter((tarefa) => {
+        return !tarefa.concluida;
+    });
+
+    if (tarefasPendentes.length === 0) {
+        contador.textContent = "Sem tarefas pendentes!";
+    } else {
+        contador.textContent = `${tarefasPendentes.length} tarefas pendentes`;
+    }
+
     if (tarefas.length === 0) {
-        lista.innerHTML = "<p>No tasks yet.</p>";
+        lista.innerHTML = "<p>Nenhuma tarefa adicionada.</p>";
         return;
     }
 
@@ -145,6 +173,8 @@ function renderizar() {
         lista.appendChild(li);
     });
 }
+
+mostrarDataAtual();
 
 function carregarTarefas() {
     fetch(API_URL)
