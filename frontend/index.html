@@ -15,6 +15,12 @@
     <input type="text" id="nova-tarefa" placeholder="Nova tarefa">
     <button onclick="adicionarTarefa()">Adicionar</button>
 
+    <div>
+        <button onclick="mudarFiltro('todas')">Todas</button>
+        <button onclick="mudarFiltro('pendentes')">Pendentes</button>
+        <button onclick="mudarFiltro('concluidas')">Concluídas</button>
+    </div>
+
     <p id="contador-tarefas"></p>
 
     <ul id="lista-tarefas"></ul>

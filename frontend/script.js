@@ -2,6 +2,8 @@ const API_URL = "http://localhost:8000/backend/tasks.php";
 
 let tarefas = [];
 
+let filtroAtual = "todas";
+
 function mostrarDataAtual() {
     const elementoData = document.getElementById("data-atual");
 
@@ -16,6 +18,11 @@ function mostrarDataAtual() {
     const dataFormatada = data.toLocaleDateString("pt-BR", opcoes);
 
     elementoData.textContent = `Hoje é ${dataFormatada}`;
+}
+
+function mudarFiltro(novoFiltro) {
+    filtroAtual = novoFiltro;
+    renderizar();
 }
 
 function enviarParaAPI(dados) {
@@ -168,7 +175,21 @@ function renderizar() {
         return;
     }
 
-    tarefas.forEach((tarefa) => {
+    let tarefasFiltradas = tarefas;
+
+    if (filtroAtual === "pendentes") {
+        tarefasFiltradas = tarefas.filter((tarefa) => {
+            return !tarefa.concluida;
+        });
+    }
+
+    if (filtroAtual === "concluidas") {
+        tarefasFiltradas = tarefas.filter((tarefa) => {
+            return tarefa.concluida;
+        });
+    }
+
+    tarefasFiltradas.forEach((tarefa) => {
         const li = criarElementoTarefa(tarefa);
         lista.appendChild(li);
     });
