@@ -71,12 +71,15 @@ function criarElementoTarefa(tarefa) {
     const botaoEditar = document.createElement("button");
     botaoEditar.textContent = "✏️";
 
-    //estilo de concluída
+
     if (tarefa.concluida) {
         texto.style.textDecoration = "line-through";
+        texto.style.opacity = "0.5";
+
+        li.style.backgroundColor = "#f0f0f0";
     }
 
-    //marcar como concluída (UPDATE)
+
     texto.onclick = () => {
         const novaSituacao = !tarefa.concluida;
 
@@ -90,7 +93,7 @@ function criarElementoTarefa(tarefa) {
         });
     };
 
-    //deletar (DELETE)
+
     botaoExcluir.onclick = () => {
         const confirmar = confirm("Deseja excluir essa tarefa?");
         if (!confirmar) return;
@@ -171,7 +174,7 @@ function renderizar() {
     }
 
     if (tarefas.length === 0) {
-        lista.innerHTML = "<p>Nenhuma tarefa adicionada.</p>";
+        lista.innerHTML = "<p>Tudo certo por hoje ✨</p>";
         return;
     }
 

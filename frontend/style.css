@@ -1,21 +1,79 @@
 body {
     font-family: Arial, sans-serif;
-    max-width: 400px;
+    max-width: 500px;
     margin: 40px auto;
-    text-align: center;
+    padding: 20px;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+h1 {
+    margin-bottom: 5px;
+}
+
+#data-atual {
+    margin-top: 0;
+    margin-bottom: 30px;
+    color: #666;
+    font-size: 18px;
 }
 
 input {
-    padding: 8px;
+    padding: 10px;
     width: 70%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
 }
 
 button {
-    padding: 8px;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 8px;
+    background-color: #333;
+    color: white;
     cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+div {
+    margin-top: 15px;
+}
+
+#contador-tarefas {
+    margin-top: 25px;
+    color: #666;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
 }
 
 li {
+    background-color: white;
     margin: 10px 0;
-    cursor: pointer;
+    padding: 12px;
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+
+    transition: 0.2s;
+}
+
+li span {
+    flex: 1;
+    text-align: left;
+}
+
+li button {
+    margin-left: 8px;
 }
