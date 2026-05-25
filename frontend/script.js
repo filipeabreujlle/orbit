@@ -22,7 +22,32 @@ function mostrarDataAtual() {
 
 function mudarFiltro(novoFiltro) {
     filtroAtual = novoFiltro;
+
+    atualizarBotoesFiltro();
+
     renderizar();
+}
+
+function atualizarBotoesFiltro() {
+    const botaoTodas = document.getElementById("filtro-todas");
+    const botaoPendentes = document.getElementById("filtro-pendentes");
+    const botaoConcluidas = document.getElementById("filtro-concluidas");
+
+    botaoTodas.classList.remove("filtro-ativo");
+    botaoPendentes.classList.remove("filtro-ativo");
+    botaoConcluidas.classList.remove("filtro-ativo");
+
+    if (filtroAtual === "todas") {
+        botaoTodas.classList.add("filtro-ativo");
+    }
+
+    if (filtroAtual === "pendentes") {
+        botaoPendentes.classList.add("filtro-ativo");
+    }
+
+    if (filtroAtual === "concluidas") {
+        botaoConcluidas.classList.add("filtro-ativo");
+    }
 }
 
 function enviarParaAPI(dados) {
@@ -211,5 +236,7 @@ function carregarTarefas() {
             console.error("Erro ao carregar tarefas:", err);
         });
 }
+
+atualizarBotoesFiltro();
 
 carregarTarefas();

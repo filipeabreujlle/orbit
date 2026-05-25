@@ -16,9 +16,17 @@
     <button onclick="adicionarTarefa()">Adicionar</button>
 
     <div>
-        <button onclick="mudarFiltro('todas')">Todas</button>
-        <button onclick="mudarFiltro('pendentes')">Pendentes</button>
-        <button onclick="mudarFiltro('concluidas')">Concluídas</button>
+        <button id="filtro-todas" onclick="mudarFiltro('todas')">
+            Todas
+        </button>
+
+        <button id="filtro-pendentes" onclick="mudarFiltro('pendentes')">
+            Pendentes
+        </button>
+
+        <button id="filtro-concluidas" onclick="mudarFiltro('concluidas')">
+            Concluídas
+        </button>
     </div>
 
     <p id="contador-tarefas"></p>
