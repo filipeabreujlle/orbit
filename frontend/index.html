@@ -9,31 +9,42 @@
 
 <body>
 
-    <h1>Orbit</h1>
-    <h2 id="data-atual"></h2>
+    <div class="container">
 
-    <input type="text" id="nova-tarefa" placeholder="Nova tarefa">
-    <button onclick="adicionarTarefa()">Adicionar</button>
+        <header>
+            <h1>Orbit</h1>
+            <h2 id="data-atual"></h2>
+        </header>
 
-    <div>
-        <button id="filtro-todas" onclick="mudarFiltro('todas')">
-            Todas
-        </button>
+        <section class="input-area">
+            <input type="text" id="nova-tarefa" placeholder="Nova tarefa">
+            <button onclick="adicionarTarefa()">Adicionar</button>
+        </section>
 
-        <button id="filtro-pendentes" onclick="mudarFiltro('pendentes')">
-            Pendentes
-        </button>
+        <section class="filtros">
 
-        <button id="filtro-concluidas" onclick="mudarFiltro('concluidas')">
-            Concluídas
-        </button>
+            <button id="filtro-todas" onclick="mudarFiltro('todas')">
+                Todas
+            </button>
+
+            <button id="filtro-pendentes" onclick="mudarFiltro('pendentes')">
+                Pendentes
+            </button>
+
+            <button id="filtro-concluidas" onclick="mudarFiltro('concluidas')">
+                Concluídas
+            </button>
+
+        </section>
+
+        <p id="contador-tarefas"></p>
+
+        <ul id="lista-tarefas"></ul>
+
     </div>
 
-    <p id="contador-tarefas"></p>
-
-    <ul id="lista-tarefas"></ul>
-
     <script src="script.js"></script>
+
 </body>
 
 </html>
