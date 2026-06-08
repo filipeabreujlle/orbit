@@ -91,10 +91,10 @@ function criarElementoTarefa(tarefa) {
     input.style.display = "none";
 
     const botaoExcluir = document.createElement("button");
-    botaoExcluir.textContent = "X";
+    botaoExcluir.textContent = "✕";
 
     const botaoEditar = document.createElement("button");
-    botaoEditar.textContent = "✏️";
+    botaoEditar.textContent = "✎";
 
 
     if (tarefa.concluida) {
