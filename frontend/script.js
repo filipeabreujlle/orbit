@@ -4,7 +4,7 @@ let tarefas = [];
 
 let filtroAtual = "todas";
 
-function mostrarDataAtual() {
+/*function mostrarDataAtual() {
     const elementoData = document.getElementById("data-atual");
 
     const data = new Date();
@@ -18,7 +18,7 @@ function mostrarDataAtual() {
     const dataFormatada = data.toLocaleDateString("pt-BR", opcoes);
 
     elementoData.textContent = `Hoje é ${dataFormatada}`;
-}
+}*/
 
 function mudarFiltro(novoFiltro) {
     filtroAtual = novoFiltro;
@@ -193,12 +193,16 @@ function renderizar() {
     });
 
     if (tarefasPendentes.length === 0) {
-        contador.textContent = "Sem tarefas pendentes!";
+        contador.textContent = "Tudo concluído ✨";
+    } else if (tarefasPendentes.length === 1) {
+        contador.textContent = "Você já sabe por onde começar.";
     } else {
-        contador.textContent = `${tarefasPendentes.length} tarefas pendentes`;
+        contador.textContent = `${tarefasPendentes.length} passos aguardam sua atenção.`;
     }
 
     if (tarefas.length === 0) {
+        contador.textContent = "";
+
         lista.innerHTML = "<p>Tudo certo por hoje ✨</p>";
         return;
     }
@@ -223,7 +227,7 @@ function renderizar() {
     });
 }
 
-mostrarDataAtual();
+/*mostrarDataAtual();*/
 
 function carregarTarefas() {
     fetch(API_URL)
@@ -236,6 +240,14 @@ function carregarTarefas() {
             console.error("Erro ao carregar tarefas:", err);
         });
 }
+
+const inputNovaTarefa = document.getElementById("nova-tarefa");
+
+inputNovaTarefa.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        adicionarTarefa();
+    }
+});
 
 atualizarBotoesFiltro();
 

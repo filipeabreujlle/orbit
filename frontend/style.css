@@ -12,11 +12,13 @@ body {
     margin: 0 auto;
 }
 
-#data-atual {
-    margin-top: 0;
-    margin-bottom: 30px;
+#saudacao {
+    margin-bottom: 10px;
+}
+
+#mensagem-dia {
     color: #666;
-    font-size: 18px;
+    margin-bottom: 30px;
 }
 
 input {
@@ -79,6 +81,24 @@ li button {
     margin-left: 8px;
 }
 
+.filtros {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.filtros button {
+    background: none;
+    color: #777;
+    padding: 0;
+}
+
+.filtros button:hover {
+    opacity: 1;
+    color: #333;
+}
+
 .filtro-ativo {
-    background-color: #111;
+    color: #111;
+    font-weight: bold;
 }
