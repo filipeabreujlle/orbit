@@ -224,6 +224,8 @@ function renderizar() {
 
     const contador = document.getElementById("contador-tarefas");
 
+    const filtros = document.getElementById("filtros");
+
     const tarefasPendentes = tarefas.filter((tarefa) => {
         return !tarefa.concluida;
     });
@@ -239,9 +241,13 @@ function renderizar() {
     if (tarefas.length === 0) {
         contador.textContent = "";
 
-        lista.innerHTML = "<p>Tudo certo por hoje ✨</p>";
+        filtros.style.display = "none";
+
+        lista.innerHTML = "";
         return;
     }
+
+    filtros.style.display = "flex";
 
     let tarefasFiltradas = tarefas;
 
