@@ -1,24 +1,39 @@
+// ====================
+// CONFIGURAÇÕES
+// ====================
+
 const API_URL = "http://localhost:8000/backend/tasks.php";
 
 let tarefas = [];
-
 let filtroAtual = "todas";
 
-/*function mostrarDataAtual() {
-    const elementoData = document.getElementById("data-atual");
 
-    const data = new Date();
+// ====================
+// MENSAGENS
+// ====================
 
-    const opcoes = {
-        weekday: "long",
-        day: "numeric",
-        month: "long"
-    };
+const mensagens = [
+    "Pequenos avanços contam.",
+    "Um passo de cada vez.",
+    "Feito é melhor que perfeito.",
+    "Comece por qualquer lugar.",
+    "O importante é continuar.",
+    "Você não precisa fazer tudo hoje.",
+    "Uma tarefa de cada vez."
+];
 
-    const dataFormatada = data.toLocaleDateString("pt-BR", opcoes);
+function mostrarMensagemDoDia() {
+    const elementoMensagem = document.getElementById("mensagem-dia");
 
-    elementoData.textContent = `Hoje é ${dataFormatada}`;
-}*/
+    const indiceAleatorio = Math.floor(Math.random() * mensagens.length);
+
+    elementoMensagem.textContent = mensagens[indiceAleatorio];
+}
+
+
+// ====================
+// FILTROS
+// ====================
 
 function mudarFiltro(novoFiltro) {
     filtroAtual = novoFiltro;
@@ -50,6 +65,11 @@ function atualizarBotoesFiltro() {
     }
 }
 
+
+// ====================
+// API
+// ====================
+
 function enviarParaAPI(dados) {
     return fetch(API_URL, {
         method: "POST",
@@ -61,8 +81,25 @@ function enviarParaAPI(dados) {
         .then(res => res.json())
         .catch(err => {
             console.error("Erro na API:", err);
-        })
+        });
 }
+
+function carregarTarefas() {
+    fetch(API_URL)
+        .then(res => res.json())
+        .then(data => {
+            tarefas = data;
+            renderizar();
+        })
+        .catch(err => {
+            console.error("Erro ao carregar tarefas:", err);
+        });
+}
+
+
+// ====================
+// TAREFAS
+// ====================
 
 function adicionarTarefa() {
     const input = document.getElementById("nova-tarefa");
@@ -71,11 +108,8 @@ function adicionarTarefa() {
     if (texto === "") return;
 
     enviarParaAPI({ texto: texto })
-        .then(data => {
-            console.log("Resposta do PHP:", data);
-
+        .then(() => {
             input.value = "";
-
             carregarTarefas();
         });
 }
@@ -96,14 +130,12 @@ function criarElementoTarefa(tarefa) {
     const botaoEditar = document.createElement("button");
     botaoEditar.textContent = "✎";
 
-
     if (tarefa.concluida) {
         texto.style.textDecoration = "line-through";
         texto.style.opacity = "0.5";
 
         li.style.backgroundColor = "#f0f0f0";
     }
-
 
     texto.onclick = () => {
         const novaSituacao = !tarefa.concluida;
@@ -118,9 +150,9 @@ function criarElementoTarefa(tarefa) {
         });
     };
 
-
     botaoExcluir.onclick = () => {
         const confirmar = confirm("Deseja excluir essa tarefa?");
+
         if (!confirmar) return;
 
         enviarParaAPI({
@@ -130,7 +162,6 @@ function criarElementoTarefa(tarefa) {
             carregarTarefas();
         });
     };
-
 
     botaoEditar.onclick = () => {
         texto.style.display = "none";
@@ -164,13 +195,14 @@ function criarElementoTarefa(tarefa) {
             if (event.key === "Enter") {
                 salvarEdicao();
             }
+
             if (event.key === "Escape") {
                 input.value = tarefa.texto;
 
                 input.style.display = "none";
                 texto.style.display = "inline";
             }
-        }
+        };
     };
 
     li.appendChild(texto);
@@ -181,6 +213,10 @@ function criarElementoTarefa(tarefa) {
     return li;
 }
 
+
+// ====================
+// RENDERIZAÇÃO
+// ====================
 
 function renderizar() {
     const lista = document.getElementById("lista-tarefas");
@@ -227,19 +263,10 @@ function renderizar() {
     });
 }
 
-/*mostrarDataAtual();*/
 
-function carregarTarefas() {
-    fetch(API_URL)
-        .then(res => res.json())
-        .then(data => {
-            tarefas = data;
-            renderizar();
-        })
-        .catch(err => {
-            console.error("Erro ao carregar tarefas:", err);
-        });
-}
+// ====================
+// EVENTOS
+// ====================
 
 const inputNovaTarefa = document.getElementById("nova-tarefa");
 
@@ -248,6 +275,13 @@ inputNovaTarefa.addEventListener("keydown", (event) => {
         adicionarTarefa();
     }
 });
+
+
+// ====================
+// INICIALIZAÇÃO
+// ====================
+
+mostrarMensagemDoDia();
 
 atualizarBotoesFiltro();
 
