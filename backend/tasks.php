@@ -53,18 +53,41 @@ if ($method === 'POST') {
         exit;
     }
 
+    if(($dados["acao"] ?? "") === "reordenar") {
+
+    foreach ($dados["ordem"] as $posicao => $id) {
+
+    $stmt = $pdo->prepare(
+        "UPDATE tarefas SET posicao = ? WHERE id = ?"
+    );
+
+    $stmt->execute([$posicao, $id]);
+    
+    }
+
+    echo json_encode(["status" => "reordenado"]);
+    exit;
+
+    }
+
     if (empty(trim($dados["texto"]))) {
         echo json_encode(["erro" => "Texto inválido"]);
         exit;
     }
 
+    $stmt = $pdo->query("SELECT MAX(posicao) as max_posicao FROM tarefas");
+    $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $novaPosicao = ($resultado["max_posicao"] ?? -1) + 1;
+
     $stmt = $pdo->prepare(
-        "INSERT INTO tarefas (texto, concluida) VALUES (?, ?)"
+        "INSERT INTO tarefas (texto, concluida, posicao) VALUES (?, ?, ?)"
     );
 
     $stmt->execute([
         $dados["texto"],
-        $dados["concluida"] ?? 0
+        $dados["concluida"] ?? 0,
+        $novaPosicao
     ]);
 
     echo json_encode([

@@ -6,6 +6,7 @@ const API_URL = "http://localhost:8000/backend/tasks.php";
 
 let tarefas = [];
 let filtroAtual = "todas";
+let tarefaArrastada = null;
 
 
 // ====================
@@ -116,6 +117,28 @@ function adicionarTarefa() {
 
 function criarElementoTarefa(tarefa) {
     const li = document.createElement("li");
+
+    const lista = document.getElementById("lista-tarefas");
+    
+    li.dataset.id = tarefa.id;
+    li.draggable = true;
+
+    li.addEventListener("dragstart", () => {
+        tarefaArrastada = li;
+    });
+
+    li.addEventListener("dragover", (event) => {
+        event.preventDefault();
+    });
+
+    li.addEventListener("drop", () => {
+
+        if (tarefaArrastada === li) {
+            return;
+        }
+
+        lista.insertBefore(tarefaArrastada, li);
+    });
 
     const texto = document.createElement("span");
     texto.textContent = tarefa.texto;
@@ -266,9 +289,9 @@ function renderizar() {
     tarefasFiltradas.forEach((tarefa, index) => {
         const li = criarElementoTarefa(tarefa);
 
-         if (index === 0 && !tarefa.concluida) {
-             li.classList.add("primeira-tarefa");
-         }
+        if (index === 0 && !tarefa.concluida) {
+            li.classList.add("primeira-tarefa");
+        }
 
         lista.appendChild(li);
     });
