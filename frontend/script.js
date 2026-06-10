@@ -263,8 +263,13 @@ function renderizar() {
         });
     }
 
-    tarefasFiltradas.forEach((tarefa) => {
+    tarefasFiltradas.forEach((tarefa, index) => {
         const li = criarElementoTarefa(tarefa);
+
+         if (index === 0 && !tarefa.concluida) {
+             li.classList.add("primeira-tarefa");
+         }
+
         lista.appendChild(li);
     });
 }

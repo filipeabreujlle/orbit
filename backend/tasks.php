@@ -22,7 +22,7 @@ $tarefas = json_decode($json, true);
 
 if ($method === 'GET') {
 
-    $stmt = $pdo->query("SELECT * FROM tarefas");
+    $stmt = $pdo->query("SELECT * FROM tarefas ORDER BY posicao ASC");
 
     $tarefas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
