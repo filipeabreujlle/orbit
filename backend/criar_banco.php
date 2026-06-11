@@ -6,18 +6,9 @@ $pdo->exec("
     CREATE TABLE IF NOT EXISTS tarefas (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         texto TEXT,
-        concluida INTEGER
+        concluida INTEGER,
+        posicao INTEGER DEFAULT 0
     )
 ");
-
-try {
-
-    $pdo->exec("
-        ALTER TABLE tarefas ADD COLUMN posicao INTEGER DEFAULT 0
-    ");
-
-} catch (PDOException $e) {
-
-}
 
 echo "Banco criado com sucesso!";

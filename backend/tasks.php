@@ -2,14 +2,6 @@
 
 $pdo = new PDO('sqlite:' . __DIR__ . '/banco.sqlite');
 
-$pdo->exec("
-    CREATE TABLE IF NOT EXISTS tarefas (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        texto TEXT,
-        concluida INTEGER
-    )
-");
-
 header("Content-Type: application/json");
 
 $method = $_SERVER['REQUEST_METHOD'];
@@ -53,21 +45,19 @@ if ($method === 'POST') {
         exit;
     }
 
-    if(($dados["acao"] ?? "") === "reordenar") {
+    if (($dados["acao"] ?? "") === "reordenar") {
 
-    foreach ($dados["ordem"] as $posicao => $id) {
+        foreach ($dados["ordem"] as $posicao => $id) {
 
-    $stmt = $pdo->prepare(
-        "UPDATE tarefas SET posicao = ? WHERE id = ?"
-    );
+            $stmt = $pdo->prepare(
+                "UPDATE tarefas SET posicao = ? WHERE id = ?"
+            );
 
-    $stmt->execute([$posicao, $id]);
-    
-    }
+            $stmt->execute([$posicao, $id]);
+        }
 
-    echo json_encode(["status" => "reordenado"]);
-    exit;
-
+        echo json_encode(["status" => "reordenado"]);
+        exit;
     }
 
     if (empty(trim($dados["texto"]))) {
