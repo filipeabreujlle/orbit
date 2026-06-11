@@ -138,6 +138,15 @@ function criarElementoTarefa(tarefa) {
         }
 
         lista.insertBefore(tarefaArrastada, li);
+
+        const novaOrdem = [...lista.children].map(item => {
+            return item.dataset.id;
+        });
+
+        enviarParaAPI({
+            acao: "reordenar",
+            ordem: novaOrdem
+        });
     });
 
     const texto = document.createElement("span");
